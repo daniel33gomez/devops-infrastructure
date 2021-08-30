@@ -33,8 +33,15 @@ Vagrant.configure("2") do |config|
     sudo sysctl -w vm.max_map_count=262144
     git clone https://github.com/daniel33gomez/devops-infrastructure.git
     cd devops-infrastructure
-    docker-compose -f docker-compose.yml up  
+    docker-compose -f docker-compose.yml up -d 
     sudo apt install openjdk-11-jdk -y
     
   SHELL
+
+  config.vm.provision "shell", run: "always", inline: <<-SHELL
+    sysctl -w vm.max_map_count=524288
+    cd devops-infrastructure/
+    sudo docker-compose up
+  SHELL
+    
 end
