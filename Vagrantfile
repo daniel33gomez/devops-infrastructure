@@ -1,5 +1,5 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/focal64"
+  config.vm.box = "bento/ubuntu-20.04"
   config.vm.disk :disk, size: "50GB", primary: true
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.box_check_update = true
@@ -11,12 +11,14 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 50000, host: 50000
   # Ports for nexus
   config.vm.network "forwarded_port", guest: 8081, host: 8081
+  # Ports fot the project
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
 
   config.vm.provider "virtualbox" do |vb|
     vb.gui = false
     vb.name = "DevOpsInfrastructrureVM"
     vb.cpus = 2
-    vb.memory = "4096"
+    vb.memory = "8192"
   end
 
   config.vm.provision "shell", inline: <<-SHELL
@@ -31,7 +33,7 @@ Vagrant.configure("2") do |config|
     echo "vm.max_map_count=262144" >> /etc/sysctl.conf
     git clone https://github.com/daniel33gomez/devops-infrastructure.git
     cd devops-infrastructure
-    docker-compose -f docker-compose.yml up  
+    docker-compose -f docker-compose.yml up -d 
     
   SHELL
 end
