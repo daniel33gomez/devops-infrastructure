@@ -36,4 +36,7 @@ Vagrant.configure("2") do |config|
     docker-compose -f docker-compose.yml up -d 
     
   SHELL
+
+  config.vm.provision "file", source: "db_key.json", 
+  destination: "keys/", run: "always"
 end

@@ -3,3 +3,6 @@
 
 # Env Vars File
 *.env
+
+# Database Key
+db_key.json
